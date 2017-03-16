@@ -1,0 +1,26 @@
+'use strict';
+
+var path = require('path');
+var express = require('express');
+var cors = require('cors');
+var bodyParser = require('body-parser');
+var config = require('../lib/config');
+var rendering = require('./middleware');
+
+function chemist() {
+  var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
+      _ref$pages = _ref.pages,
+      pages = _ref$pages === undefined ? {} : _ref$pages,
+      Document = _ref.Document;
+
+  var app = express();
+
+  app.use(express.static(path.join(process.cwd(), config.staticPath)));
+  app.use(bodyParser.json());
+  app.use(cors());
+  app.use(rendering({ components: pages, Document: Document }));
+
+  return app;
+}
+
+module.exports = chemist;
