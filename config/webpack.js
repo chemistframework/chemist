@@ -41,7 +41,7 @@ module.exports = function (config) {
 
   const webpackIsomorphicPlugin = new WebpackIsomorphicToolsPlugin(config.webpackIsomorphicTools)
 
-  config.webpack = {}
+  config.webpack = config.webpack || {}
   config.webpack.devtool = 'source-map'
   config.webpack.context = process.cwd()
   config.webpack.entry = {
