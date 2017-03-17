@@ -45,7 +45,7 @@ module.exports = function (config) {
   config.webpack.devtool = 'source-map'
   config.webpack.context = process.cwd()
   config.webpack.entry = {
-    main: ['./app/client/index.js']
+    main: [config.clientPath]
   }
 
   config.webpack.output = {

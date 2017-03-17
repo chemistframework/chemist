@@ -16,5 +16,6 @@ module.exports = function (config) {
   }
 
   config.staticPath = './static'
+  config.clientPath = path.join(process.cwd(), 'app', 'client')
   config.serverPath = path.join(process.cwd(), 'app', 'server')
 }
