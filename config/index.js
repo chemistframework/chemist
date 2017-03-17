@@ -15,7 +15,8 @@ module.exports = function (config) {
     port: 3001
   }
 
+  config.rootPath = process.cwd()
   config.staticPath = './static'
-  config.clientPath = path.join(process.cwd(), 'app', 'client')
-  config.serverPath = path.join(process.cwd(), 'app', 'server')
+  config.clientPath = path.join(config.rootPath, 'app', 'client')
+  config.serverPath = path.join(config.rootPath, 'app', 'server')
 }
