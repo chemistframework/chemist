@@ -4,7 +4,16 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 
 var React = require('react');
 
+var _require = require('./helpers'),
+    warn = _require.warn;
+
+var MISSING_CONTEXT_WARNING = '`Link` is being used outside of the `router` context. ' + 'You must nest `Link` within `ClientRouter`.';
+
 function Link(props, context) {
+  if (!context.router) {
+    warn(MISSING_CONTEXT_WARNING);
+  }
+
   var handleClick = function handleClick(e) {
     e.preventDefault();
 

@@ -8,7 +8,7 @@
   },
   "scripts": {
     "build": "babel src --out-dir dist",
-    "test": "ava"
+    "test": "NODE_ENV=test ava"
   },
   "keywords": [],
   "author": "Richard Foster <richard@rpf.me> (http://rpf.me)",

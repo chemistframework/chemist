@@ -3,6 +3,7 @@ const React = require('react')
 const { spy } = require('sinon')
 const { shallow } = require('enzyme')
 const Link = require('../src/Link')
+const { _warnings } = require('../src/helpers')
 
 test('Link should render an <a> tag with the content given', t => {
   const link = <Link href="/about">About Us</Link>
@@ -46,4 +47,13 @@ test('Link should trigger a history push on click', t => {
   wrapper.find('a').simulate('click', event)
 
   t.deepEqual(['/about?test=123&great'], pushLocation.firstCall.args)
+})
+
+test('Link should warn if used outside of ClientRouter', t => {
+  const link = <Link href="/about">About Us</Link>
+  const context = {}
+  shallow(link, { context })
+
+  const warning = '`Link` is being used outside of the `router` context. You must nest `Link` within `ClientRouter`.'
+  t.true(_warnings.includes(warning))
 })

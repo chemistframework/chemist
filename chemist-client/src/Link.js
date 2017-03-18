@@ -1,6 +1,15 @@
 const React = require('react')
+const { warn } = require('./helpers')
+
+const MISSING_CONTEXT_WARNING =
+  '`Link` is being used outside of the `router` context. ' +
+  'You must nest `Link` within `ClientRouter`.'
 
 function Link (props, context) {
+  if (!context.router) {
+    warn(MISSING_CONTEXT_WARNING)
+  }
+
   const handleClick = e => {
     e.preventDefault()
 
