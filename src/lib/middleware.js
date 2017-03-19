@@ -16,20 +16,16 @@ module.exports = function middleware ({ components, Document } = {}) {
     res.chemist = {}
 
     res.chemist.render = async function (page, props = {}) {
-      try {
-        const mode = requestMode(req)
-        const body = await render({
-          mode,
-          page,
-          Document,
-          props: Object.assign({ params: req.params }, props),
-          pages: components
-        })
+      const mode = requestMode(req)
+      const body = await render({
+        mode,
+        page,
+        Document,
+        props: Object.assign({ params: req.params }, props),
+        pages: components
+      })
 
-        return respond(res, mode, body)
-      } catch (e) {
-        return next(e)
-      }
+      return respond(res, mode, body)
     }
 
     res.chemist.redirect = function (path, { status = 302 } = {}) {

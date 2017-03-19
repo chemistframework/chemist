@@ -31,9 +31,8 @@ module.exports = function middleware() {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
                 mode = requestMode(req);
-                _context.next = 4;
+                _context.next = 3;
                 return render({
                   mode: mode,
                   page: page,
@@ -42,21 +41,16 @@ module.exports = function middleware() {
                   pages: components
                 });
 
-              case 4:
+              case 3:
                 body = _context.sent;
                 return _context.abrupt('return', respond(res, mode, body));
 
-              case 8:
-                _context.prev = 8;
-                _context.t0 = _context['catch'](0);
-                return _context.abrupt('return', next(_context.t0));
-
-              case 11:
+              case 5:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[0, 8]]);
+        }, _callee, this);
       }));
 
       return function (_x2, _x3) {
