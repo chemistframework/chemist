@@ -40,10 +40,7 @@ var ClientRouter = function (_React$Component) {
       };
 
       var pushLocationWithPage = function pushLocationWithPage(pathname, page) {
-        var location = createLocation(pathname);
-        location.state = location.state || {};
-        location.state.page = page;
-
+        var location = createLocation(pathname, { page: page });
         _this2.props.history.push(location);
       };
 

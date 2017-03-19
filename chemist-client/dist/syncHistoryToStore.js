@@ -2,7 +2,7 @@
 
 var _require = require('./actions/routing'),
     setLocation = _require.setLocation,
-    fetchLocation = _require.fetchLocation;
+    fetchAndReplaceLocation = _require.fetchAndReplaceLocation;
 
 module.exports = function syncHistoryToStore(_ref) {
   var history = _ref.history,
@@ -17,7 +17,7 @@ module.exports = function syncHistoryToStore(_ref) {
       var payload = Object.assign({}, page, { location: location });
       store.dispatch(setLocation(payload));
     } else {
-      store.dispatch(fetchLocation({ host: host, location: location }));
+      store.dispatch(fetchAndReplaceLocation({ host: host, location: location, history: history }));
     }
   });
 };

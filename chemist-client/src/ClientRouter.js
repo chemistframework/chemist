@@ -13,10 +13,7 @@ class ClientRouter extends React.Component {
     }
 
     const pushLocationWithPage = (pathname, page) => {
-      const location = createLocation(pathname)
-      location.state = location.state || {}
-      location.state.page = page
-
+      const location = createLocation(pathname, { page })
       this.props.history.push(location)
     }
 

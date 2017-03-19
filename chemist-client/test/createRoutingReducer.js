@@ -1,11 +1,8 @@
 const test = require('ava')
-const nock = require('nock')
 const { applyMiddleware, createStore, combineReducers } = require('redux')
 const thunk = require('redux-thunk').default
 const createRoutingReducer = require('../src/createRoutingReducer')
-const { fetchLocation } = require('../src/actions/routing')
-
-const HOST = 'http://www.example.com'
+const { setLocation } = require('../src/actions/routing')
 
 test('createRoutingReducer should create a new Routing Reducer', t => {
   const TestComponent = () => null
@@ -18,14 +15,15 @@ test('createRoutingReducer should create a new Routing Reducer', t => {
   t.is('function', typeof reducer)
 })
 
-test.cb('Routing Reducer should call fetchLocation and set the current component', t => {
+test.cb('Routing Reducer should set the current location when fetchAndReplaceLocation is called', t => {
   t.plan(1)
 
   const TestComponent = () => null
+  const NextComponent = () => null
 
   const reducer = combineReducers({
     routing: createRoutingReducer({
-      pages: { TestComponent },
+      pages: { TestComponent, NextComponent },
       initialPage: 'TestComponent',
       initialProps: {}
     })
@@ -37,26 +35,21 @@ test.cb('Routing Reducer should call fetchLocation and set the current component
   const location = {
     pathname: '/test',
     search: '?query=true',
-    state: { test: 'state' },
+    state: { page: { page: 'NextComponent', props: { next: true } } },
     hash: '',
     key: 'ignwkm'
   }
 
-  nock(HOST)
-    .get('/test')
-    .query({ query: true })
-    .reply(200, { page: 'TestComponent', props: { query: true } })
-
   store.subscribe(function () {
     t.deepEqual(store.getState(), {
       routing: {
-        Page: TestComponent,
-        props: { query: true }
+        Page: NextComponent,
+        props: { next: true }
       }
     })
 
     t.end()
   })
 
-  store.dispatch(fetchLocation({ host: HOST, location }))
+  store.dispatch(setLocation({ location, page: 'NextComponent', props: { next: true } }))
 })

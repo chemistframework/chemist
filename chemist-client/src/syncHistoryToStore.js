@@ -1,4 +1,4 @@
-const { setLocation, fetchLocation } = require('./actions/routing')
+const { setLocation, fetchAndReplaceLocation } = require('./actions/routing')
 
 module.exports = function syncHistoryToStore ({ history, store }) {
   const host = `${window.location.protocol}//${window.location.host}`
@@ -10,7 +10,7 @@ module.exports = function syncHistoryToStore ({ history, store }) {
       const payload = Object.assign({}, page, { location })
       store.dispatch(setLocation(payload))
     } else {
-      store.dispatch(fetchLocation({ host, location }))
+      store.dispatch(fetchAndReplaceLocation({ host, location, history }))
     }
   })
 }
