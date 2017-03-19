@@ -48,53 +48,63 @@ module.exports = function (config) {
     main: [config.clientPath]
   }
 
-  config.webpack.output = {
-    path: assetsPath,
-    filename: '[name]-[chunkhash].js',
-    chunkFilename: '[name]-[chunkhash].js',
-    publicPath: '/dist/'
-  }
+  config.webpack.output = config.webpack.output || {}
+  config.webpack.output.path = assetsPath
+  config.webpack.output.filename = '[name]-[chunkhash].js'
+  config.webpack.output.chunkFilename = '[name]-[chunkhash].js'
+  config.webpack.output.publicPath = '/dist/'
 
-  config.webpack.module = {}
-  config.webpack.module.loaders = [
-    {
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loaders: ['babel-loader']
-    },
-    {
-      test: /\.json$/,
-      loader: 'json-loader'
-    },
-    {
-      test: /\.scss$/,
-      loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true')
-    },
-    {
-      test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'url?limit=10000&mimetype=application/font-woff'
-    },
-    {
-      test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'url?limit=10000&mimetype=application/font-woff'
-    },
-    {
-      test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'url?limit=10000&mimetype=application/octet-stream'
-    },
-    {
-      test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'file'
-    },
-    {
-      test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-      loader: 'url?limit=10000&mimetype=image/svg+xml'
-    },
-    {
-      test: webpackIsomorphicPlugin.regexp('images'),
-      loader: 'url-loader?limit=10240'
+  config.webpack.module = config.webpack.module || {}
+  config.webpack.module.loaders = config.webpack.module.loaders || []
+
+  config.webpack.module.loaders.push({
+    test: /\.jsx?$/,
+    exclude: /node_modules/,
+    loaders: ['babel-loader']
+  })
+
+  config.webpack.module.loaders.push({
+    test: /\.json$/,
+    loader: 'json-loader'
+  })
+
+  config.webpack.module.loaders.push({
+    test: /\.scss$/,
+    loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true')
+  })
+
+  config.webpack.module.loaders.push({
+    test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
+    loader: 'url?limit=10000&mimetype=application/font-woff'
+  })
+
+  config.webpack.module.loaders.push({
+    test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
+    loader: 'url?limit=10000&mimetype=application/font-woff'
+  })
+
+  config.webpack.module.loaders.push({
+    test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
+    loader: 'url?limit=10000&mimetype=application/octet-stream'
+  })
+
+  config.webpack.module.loaders.push({
+    test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
+    loader: 'file'
+  })
+
+  config.webpack.module.loaders.push({
+    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+    loader: 'url?limit=10000&mimetype=image/svg+xml'
+  })
+
+  config.webpack.module.loaders.push({
+    test: webpackIsomorphicPlugin.regexp('images'),
+    loader: 'file-loader',
+    options: {
+      name: '[path][name].[hash].[ext]',
     }
-  ]
+  })
 
   config.webpack.module.progress = true
   config.webpack.module.resolve = {
@@ -102,18 +112,19 @@ module.exports = function (config) {
     extensions: ['', '.json', '.js', '.jsx']
   }
 
-  config.webpack.plugins = [
-    new CleanPlugin([assetsPath], { root: process.cwd() }),
-    new ExtractTextPlugin('[name]-[chunkhash].css', { allChunks: true }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        NODE_ENV: '"production"'
-      }
-    }),
-    new webpack.IgnorePlugin(/\.\/development/, /\/config$/),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
-    new webpack.optimize.UglifyJsPlugin({ compress: { warnings: false } }),
-    webpackIsomorphicPlugin
-  ]
+  config.webpack.plugins = config.webpack.plugins || []
+  config.webpack.plugins.push(new CleanPlugin([assetsPath], { root: process.cwd() }))
+  config.webpack.plugins.push(new ExtractTextPlugin('[name]-[chunkhash].css', { allChunks: true }))
+  config.webpack.plugins.push(new webpack.DefinePlugin({
+    'process.env': {
+      NODE_ENV: '"production"'
+    }
+  }))
+  config.webpack.plugins.push(new webpack.IgnorePlugin(/\.\/development/, /\/config$/))
+  config.webpack.plugins.push(new webpack.optimize.DedupePlugin())
+  config.webpack.plugins.push(new webpack.optimize.OccurenceOrderPlugin())
+  config.webpack.plugins.push(new webpack.optimize.UglifyJsPlugin({
+    compress: { warnings: false }
+  }))
+  config.webpack.plugins.push(webpackIsomorphicPlugin)
 }

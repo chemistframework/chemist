@@ -51,7 +51,10 @@ module.exports = function (config) {
     },
     {
       test: webpackIsomorphicPlugin.regexp('images'),
-      loader: 'url-loader?limit=10240'
+      loader: 'file-loader',
+      options: {
+        name: '[path][name].[hash].[ext]',
+      }
     }
   ]
 
