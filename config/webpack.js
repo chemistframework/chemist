@@ -11,29 +11,31 @@ module.exports = function (config) {
     assets: {
       images: {
         extensions: ['jpeg', 'jpg', 'png', 'gif'],
-        parser: WebpackIsomorphicToolsPlugin.url_loader_parser
+        parser: WebpackIsomorphicToolsPlugin.urlLoaderParser
       },
       fonts: {
         extensions: ['woff', 'woff2', 'ttf', 'eot'],
-        parser: WebpackIsomorphicToolsPlugin.url_loader_parser
+        regular_expression: /\.(woff|woff2|ttf|eot)(\?.*)?$/,
+        parser: WebpackIsomorphicToolsPlugin.urlLoaderParser
       },
       svg: {
         extension: 'svg',
-        parser: WebpackIsomorphicToolsPlugin.url_loader_parser
+        regular_expression: /\.(svg)(\?.*)?$/,
+        parser: WebpackIsomorphicToolsPlugin.urlLoaderParser
       },
       style_modules: {
         extensions: ['scss'],
         filter (module, regex, options, log) {
           if (!options.development) return regex.test(module.name)
-          return WebpackIsomorphicToolsPlugin.style_loader_filter(module, regex, options, log)
+          return WebpackIsomorphicToolsPlugin.styleLoaderFilter(module, regex, options, log)
         },
         path (module, options, log) {
           if (!options.development) return module.name
-          return WebpackIsomorphicToolsPlugin.style_loader_path_extractor(module, options, log)
+          return WebpackIsomorphicToolsPlugin.styleLoaderPathExtractor(module, options, log)
         },
         parser (module, options, log) {
           if (!options.development) return module.source
-          return WebpackIsomorphicToolsPlugin.css_modules_loader_parser(module, options, log)
+          return WebpackIsomorphicToolsPlugin.cssModulesLoaderParser(module, options, log)
         }
       }
     }
@@ -77,7 +79,7 @@ module.exports = function (config) {
     test: /\.(woff|woff2|ttf|eot|svg)(\?.*)?$/,
     loader: 'file-loader',
     options: {
-      name: '[path][name].[hash].[ext]',
+      name: 'fonts/[name].[hash].[ext]',
     }
   })
 
@@ -85,7 +87,7 @@ module.exports = function (config) {
     test: webpackIsomorphicPlugin.regexp('images'),
     loader: 'file-loader',
     options: {
-      name: '[path][name].[hash].[ext]',
+      name: 'images/[name].[hash].[ext]',
     }
   })
 

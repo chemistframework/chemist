@@ -33,14 +33,14 @@ module.exports = function (config) {
       test: /\.(woff|woff2|ttf|eot|svg)(\?.*)?$/,
       loader: 'file-loader',
       options: {
-        name: '[path][name].[hash].[ext]',
+        name: 'fonts/[name].[hash].[ext]',
       }
     },
     {
       test: webpackIsomorphicPlugin.regexp('images'),
       loader: 'file-loader',
       options: {
-        name: '[path][name].[hash].[ext]',
+        name: 'images/[name].[hash].[ext]',
       }
     }
   ]
