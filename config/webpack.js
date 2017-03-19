@@ -74,28 +74,11 @@ module.exports = function (config) {
   })
 
   config.webpack.module.loaders.push({
-    test: /\.woff(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'url?limit=10000&mimetype=application/font-woff'
-  })
-
-  config.webpack.module.loaders.push({
-    test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'url?limit=10000&mimetype=application/font-woff'
-  })
-
-  config.webpack.module.loaders.push({
-    test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'url?limit=10000&mimetype=application/octet-stream'
-  })
-
-  config.webpack.module.loaders.push({
-    test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'file'
-  })
-
-  config.webpack.module.loaders.push({
-    test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-    loader: 'url?limit=10000&mimetype=image/svg+xml'
+    test: /\.(woff|woff2|ttf|eot|svg)(\?.*)?$/,
+    loader: 'file-loader',
+    options: {
+      name: '[path][name].[hash].[ext]',
+    }
   })
 
   config.webpack.module.loaders.push({
