@@ -10,7 +10,7 @@ var _require = require('./helpers'),
 var MISSING_CONTEXT_WARNING = '`Link` is being used outside of the `router` context. ' + 'You must nest `Link` within `ClientRouter`.';
 
 function Link(props, context) {
-  if (!context.router) {
+  if (typeof window !== 'undefined' && !context.router) {
     warn(MISSING_CONTEXT_WARNING);
   }
 

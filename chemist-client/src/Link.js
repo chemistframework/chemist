@@ -6,7 +6,7 @@ const MISSING_CONTEXT_WARNING =
   'You must nest `Link` within `ClientRouter`.'
 
 function Link (props, context) {
-  if (!context.router) {
+  if (typeof window !== 'undefined' && !context.router) {
     warn(MISSING_CONTEXT_WARNING)
   }
 
