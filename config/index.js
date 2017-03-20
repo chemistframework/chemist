@@ -19,4 +19,5 @@ module.exports = function (config) {
   config.staticPath = path.join(config.rootPath, './static')
   config.clientPath = path.join(config.rootPath, 'app', 'client')
   config.serverPath = path.join(config.rootPath, 'app', 'server')
+  config.assetHost = ''
 }

@@ -54,10 +54,7 @@ module.exports = function (config) {
   config.webpack.output.path = assetsPath
   config.webpack.output.filename = '[name]-[chunkhash].js'
   config.webpack.output.chunkFilename = '[name]-[chunkhash].js'
-  config.webpack.output.publicPath = '/dist/'
-
-  config.webpack.module = config.webpack.module || {}
-  config.webpack.module.loaders = config.webpack.module.loaders || []
+  config.webpack.output.publicPath = `${config.assetHost}/public`
 
   config.webpack.module = {
     loaders: [
