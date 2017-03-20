@@ -26,7 +26,7 @@ module.exports = function (config) {
       style_modules: {
         extensions: ['scss'],
         filter (module, regex, options, log) {
-          if (!options.development) return regex.test(module.name)
+          if (!options.development) return null
           return WebpackIsomorphicToolsPlugin.styleLoaderFilter(module, regex, options, log)
         },
         path (module, options, log) {
@@ -35,7 +35,7 @@ module.exports = function (config) {
         },
         parser (module, options, log) {
           if (!options.development) return module.source
-          return WebpackIsomorphicToolsPlugin.cssModulesLoaderParser(module, options, log)
+          return WebpackIsomorphicToolsPlugin.cssLoaderParser(module, options, log)
         }
       }
     }
@@ -59,37 +59,42 @@ module.exports = function (config) {
   config.webpack.module = config.webpack.module || {}
   config.webpack.module.loaders = config.webpack.module.loaders || []
 
-  config.webpack.module.loaders.push({
-    test: /\.jsx?$/,
-    exclude: /node_modules/,
-    loaders: ['babel-loader']
-  })
+  config.webpack.module = {
+    loaders: [
+      {
+        test: /\.jsx?$/,
+        exclude: /node_modules/,
+        loaders: ['babel-loader']
+      },
 
-  config.webpack.module.loaders.push({
-    test: /\.json$/,
-    loader: 'json-loader'
-  })
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
+      },
 
-  config.webpack.module.loaders.push({
-    test: /\.scss$/,
-    loader: ExtractTextPlugin.extract('style', 'css?modules&importLoaders=2&sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true')
-  })
+      {
+        test: /\.scss$/,
+        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true')
+      },
 
-  config.webpack.module.loaders.push({
-    test: /\.(woff|woff2|ttf|eot|svg)(\?.*)?$/,
-    loader: 'file-loader',
-    options: {
-      name: 'fonts/[name].[hash].[ext]',
-    }
-  })
+      {
+        test: /\.(woff|woff2|ttf|eot|svg)(\?.*)?$/,
+        loader: 'file-loader',
+        options: {
+          name: 'fonts/[name].[hash].[ext]',
+        }
+      },
 
-  config.webpack.module.loaders.push({
-    test: webpackIsomorphicPlugin.regexp('images'),
-    loader: 'file-loader',
-    options: {
-      name: 'images/[name].[hash].[ext]',
-    }
-  })
+      {
+        test: webpackIsomorphicPlugin.regexp('images'),
+        loader: 'file-loader',
+        options: {
+          name: 'images/[name].[hash].[ext]',
+        }
+      }
+    ]
+  }
+
 
   config.webpack.module.progress = true
   config.webpack.module.resolve = {
@@ -97,19 +102,20 @@ module.exports = function (config) {
     extensions: ['', '.json', '.js', '.jsx']
   }
 
-  config.webpack.plugins = config.webpack.plugins || []
-  config.webpack.plugins.push(new CleanPlugin([assetsPath], { root: process.cwd() }))
-  config.webpack.plugins.push(new ExtractTextPlugin('[name]-[chunkhash].css', { allChunks: true }))
-  config.webpack.plugins.push(new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: '"production"'
-    }
-  }))
-  config.webpack.plugins.push(new webpack.IgnorePlugin(/\.\/development/, /\/config$/))
-  config.webpack.plugins.push(new webpack.optimize.DedupePlugin())
-  config.webpack.plugins.push(new webpack.optimize.OccurenceOrderPlugin())
-  config.webpack.plugins.push(new webpack.optimize.UglifyJsPlugin({
-    compress: { warnings: false }
-  }))
-  config.webpack.plugins.push(webpackIsomorphicPlugin)
+  config.webpack.plugins = [
+    new CleanPlugin([assetsPath], { root: process.cwd() }),
+    new ExtractTextPlugin('[name]-[chunkhash].css', { allChunks: true }),
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    new webpack.IgnorePlugin(/\.\/development/, /\/config$/),
+    new webpack.optimize.DedupePlugin(),
+    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: { warnings: false }
+    }),
+    webpackIsomorphicPlugin
+  ]
 }
