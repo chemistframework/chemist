@@ -5,6 +5,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
 var React = require('react');
 var ReactDOM = require('react-dom/server');
 
+var _require = require('react-redux'),
+    Provider = _require.Provider;
+
 var MISSING_COMPONENT_ERROR = 'You must pass a `page` option into render';
 var missingPageError = function missingPageError(name) {
   return 'The page "' + name + '" is not registered';
@@ -31,7 +34,11 @@ function renderHtml(_ref2) {
     var layoutProps = { assets: global.webpackIsomorphic.assets() };
     var store = createStore({ initialPage: page, initialProps: props });
 
-    var content = ReactDOM.renderToString(React.createElement(PageComponent, props), { context: { store: store } });
+    var content = ReactDOM.renderToString(React.createElement(
+      Provider,
+      { store: store },
+      React.createElement(PageComponent, props)
+    ));
 
     content = ReactDOM.renderToStaticMarkup(React.createElement(Document, _extends({
       content: content,
