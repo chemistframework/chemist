@@ -2,6 +2,7 @@ const React = require('react')
 const ReactDOM = require('react-dom/server')
 const { Provider } = require('react-redux')
 
+const MISSING_CREATE_STORE_ERROR = 'You must pass a `createStore` function into render'
 const MISSING_COMPONENT_ERROR = 'You must pass a `page` option into render'
 const missingPageError = name => `The page "${name}" is not registered`
 const invalidModeError = mode => `The mode "${mode}" is invalid. Use "HTML" or "JSON"`
@@ -37,6 +38,8 @@ function renderHtml ({ Document, PageComponent, page, props, createStore }) {
 }
 
 function render ({ mode, pages, page, props, Document, createStore }) {
+  if (!createStore) return Promise.reject(new Error(MISSING_CREATE_STORE_ERROR))
+
   if (process.env.NODE_ENV === 'development') {
     global.webpackIsomorphic.refresh()
   }
