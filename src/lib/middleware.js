@@ -15,17 +15,19 @@ module.exports = function middleware ({ components, Document } = {}) {
   return function renderingMiddleware (req, res, next) {
     res.chemist = {}
 
-    res.chemist.render = async function (page, props = {}) {
+    res.chemist.render = function (page, props = {}) {
       const mode = requestMode(req)
-      const body = await render({
+      const options = {
         mode,
         page,
         Document,
         props: Object.assign({ params: req.params }, props),
         pages: components
-      })
+      }
 
-      return respond(res, mode, body)
+      render(options)
+        .then(body => respond(res, mode, body))
+        .catch(err => { throw err })
     }
 
     res.chemist.redirect = function (path, { status = 302 } = {}) {

@@ -1,7 +1,5 @@
 'use strict';
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
-
 var render = require('../../chemist-render');
 
 var requestMode = function requestMode(req) {
@@ -23,45 +21,29 @@ module.exports = function middleware() {
   return function renderingMiddleware(req, res, next) {
     res.chemist = {};
 
-    res.chemist.render = function () {
-      var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee(page) {
-        var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-        var mode, body;
-        return regeneratorRuntime.wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                mode = requestMode(req);
-                _context.next = 3;
-                return render({
-                  mode: mode,
-                  page: page,
-                  Document: Document,
-                  props: Object.assign({ params: req.params }, props),
-                  pages: components
-                });
+    res.chemist.render = function (page) {
+      var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 
-              case 3:
-                body = _context.sent;
-                return _context.abrupt('return', respond(res, mode, body));
-
-              case 5:
-              case 'end':
-                return _context.stop();
-            }
-          }
-        }, _callee, this);
-      }));
-
-      return function (_x2, _x3) {
-        return _ref2.apply(this, arguments);
+      var mode = requestMode(req);
+      var options = {
+        mode: mode,
+        page: page,
+        Document: Document,
+        props: Object.assign({ params: req.params }, props),
+        pages: components
       };
-    }();
+
+      render(options).then(function (body) {
+        return respond(res, mode, body);
+      }).catch(function (err) {
+        throw err;
+      });
+    };
 
     res.chemist.redirect = function (path) {
-      var _ref3 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
-          _ref3$status = _ref3.status,
-          status = _ref3$status === undefined ? 302 : _ref3$status;
+      var _ref2 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {},
+          _ref2$status = _ref2.status,
+          status = _ref2$status === undefined ? 302 : _ref2$status;
 
       res.redirect(status, path);
     };
