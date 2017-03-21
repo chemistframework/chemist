@@ -1,5 +1,6 @@
 const React = require('react')
 const ReactDOM = require('react-dom/server')
+const { Provider } = require('react-redux')
 
 const MISSING_COMPONENT_ERROR = 'You must pass a `page` option into render'
 const missingPageError = name => `The page "${name}" is not registered`
@@ -15,8 +16,9 @@ function renderHtml ({ Document, PageComponent, page, props, createStore }) {
     const store = createStore({ initialPage: page, initialProps: props })
 
     let content = ReactDOM.renderToString(
-      (<PageComponent {...props} />),
-      { context: { store } }
+      <Provider store={store}>
+        <PageComponent {...props} />
+      </Provider>
     )
 
     content = ReactDOM.renderToStaticMarkup(
