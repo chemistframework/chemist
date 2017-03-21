@@ -58,7 +58,7 @@ function render(_ref3) {
       page = _ref3.page,
       props = _ref3.props,
       Document = _ref3.Document,
-      store = _ref3.store;
+      createStore = _ref3.createStore;
 
   if (process.env.NODE_ENV === 'development') {
     global.webpackIsomorphic.refresh();
@@ -73,7 +73,7 @@ function render(_ref3) {
     case 'JSON':
       return renderJson({ page: page, props: props });
     case 'HTML':
-      return renderHtml({ Document: Document, PageComponent: PageComponent, page: page, props: props, store: store });
+      return renderHtml({ Document: Document, PageComponent: PageComponent, page: page, props: props, createStore: createStore });
     default:
       return Promise.reject(new Error(invalidModeError(mode)));
   }

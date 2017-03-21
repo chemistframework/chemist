@@ -36,7 +36,7 @@ function renderHtml ({ Document, PageComponent, page, props, createStore }) {
   }
 }
 
-function render ({ mode, pages, page, props, Document, store }) {
+function render ({ mode, pages, page, props, Document, createStore }) {
   if (process.env.NODE_ENV === 'development') {
     global.webpackIsomorphic.refresh()
   }
@@ -48,7 +48,7 @@ function render ({ mode, pages, page, props, Document, store }) {
 
   switch (mode) {
     case 'JSON': return renderJson({ page, props })
-    case 'HTML': return renderHtml({ Document, PageComponent, page, props, store })
+    case 'HTML': return renderHtml({ Document, PageComponent, page, props, createStore })
     default: return Promise.reject(new Error(invalidModeError(mode)))
   }
 }
