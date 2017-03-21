@@ -10,10 +10,11 @@ function renderJson ({ page, props }) {
   return Promise.resolve({ page, props })
 }
 
-function renderHtml ({ Document, PageComponent, page, props, store }) {
-  const layoutProps = { assets: global.webpackIsomorphic.assets() }
-
+function renderHtml ({ Document, PageComponent, page, props, createStore }) {
   try {
+    const layoutProps = { assets: global.webpackIsomorphic.assets() }
+    const store = createStore({ initialPage: page, initialProps: props })
+
     let content = ReactDOM.renderToString(<PageComponent {...props} />)
 
     content = ReactDOM.renderToStaticMarkup(
