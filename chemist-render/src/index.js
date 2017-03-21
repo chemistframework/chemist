@@ -1,6 +1,5 @@
 const React = require('react')
 const ReactDOM = require('react-dom/server')
-const { Provider } = require('react-redux')
 
 const MISSING_COMPONENT_ERROR = 'You must pass a `page` option into render'
 const missingPageError = name => `The page "${name}" is not registered`
@@ -15,17 +14,18 @@ function renderHtml ({ Document, PageComponent, page, props, createStore }) {
     const layoutProps = { assets: global.webpackIsomorphic.assets() }
     const store = createStore({ initialPage: page, initialProps: props })
 
-    let content = ReactDOM.renderToString(<PageComponent {...props} />)
+    let content = ReactDOM.renderToString(
+      (<PageComponent {...props} />),
+      { context: { store } }
+    )
 
     content = ReactDOM.renderToStaticMarkup(
-      <Provider store={store}>
-        <Document
-          content={content}
-          page={page}
-          pageProps={props}
-          {...layoutProps}
-        />
-      </Provider>
+      <Document
+        content={content}
+        page={page}
+        pageProps={props}
+        {...layoutProps}
+      />
     )
 
     return Promise.resolve(content)
