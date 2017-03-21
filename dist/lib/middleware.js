@@ -16,7 +16,8 @@ var respond = function respond(res, mode, body) {
 module.exports = function middleware() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       components = _ref.components,
-      Document = _ref.Document;
+      Document = _ref.Document,
+      store = _ref.store;
 
   return function renderingMiddleware(req, res, next) {
     res.chemist = {};
@@ -29,6 +30,7 @@ module.exports = function middleware() {
         mode: mode,
         page: page,
         Document: Document,
+        store: store,
         props: Object.assign({ params: req.params }, props),
         pages: components
       };
