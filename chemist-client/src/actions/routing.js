@@ -10,7 +10,10 @@ function fetchAndReplaceLocation ({ host, location, history }) {
   return async function () {
     try {
       const path = host + location.pathname + location.search
-      const response = await fetch(path, { headers: { Accept: 'application/json' } })
+      const response = await fetch(path, {
+        credentials: 'same-origin',
+        headers: { Accept: 'application/json' }
+      })
       const page = await response.json()
       const responseResource = parseUri(response.url).resource()
       const responseLocation = createLocation(responseResource, { page })

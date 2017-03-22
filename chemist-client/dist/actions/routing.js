@@ -32,7 +32,10 @@ function fetchAndReplaceLocation(_ref2) {
             _context.prev = 0;
             path = host + location.pathname + location.search;
             _context.next = 4;
-            return fetch(path, { headers: { Accept: 'application/json' } });
+            return fetch(path, {
+              credentials: 'same-origin',
+              headers: { Accept: 'application/json' }
+            });
 
           case 4:
             response = _context.sent;
