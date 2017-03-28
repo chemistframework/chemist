@@ -1,5 +1,5 @@
 const URL = require('url-parse')
-const extend = require('extend')
+const merge = require('deepmerge')
 
 function createServerHttp (pushLocationWithPage) {
   return function server (url, options = {}) {
@@ -10,7 +10,7 @@ function createServerHttp (pushLocationWithPage) {
       }
     }
 
-    const mergedOptions = extend(true, {}, defaults, options)
+    const mergedOptions = merge(defaults, options)
 
     return fetch(url, mergedOptions).then(async response => {
       const page = await response.json()
