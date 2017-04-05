@@ -7,3 +7,4 @@ exports.FormInput = require('./chemist-client/dist/Form').FormInput
 exports.FormSubmit = require('./chemist-client/dist/Form').FormSubmit
 exports.Link = require('./chemist-client/dist/Link')
 exports.syncHistoryToStore = require('./chemist-client/dist/syncHistoryToStore')
+exports.SET_LOCATION = require('./chemist-client/dist/types').SET_LOCATION
