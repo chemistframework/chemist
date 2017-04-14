@@ -6,6 +6,7 @@ const WebpackIsomorphicToolsPlugin = require('webpack-isomorphic-tools/plugin')
 
 module.exports = function (config) {
   const assetsPath = path.resolve(process.cwd(), config.staticPath, 'dist')
+  const extractCSS = new ExtractTextPlugin({ filename: '[name]-[chunkhash].css', allChunks: true })
 
   config.webpackIsomorphicTools = {
     assets: {
@@ -57,7 +58,7 @@ module.exports = function (config) {
   config.webpack.output.publicPath = `${config.assetHost}/dist/`
 
   config.webpack.module = {
-    loaders: [
+    rules: [
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
@@ -71,7 +72,14 @@ module.exports = function (config) {
 
       {
         test: /\.scss$/,
-        loader: ExtractTextPlugin.extract('style', 'css?sourceMap!autoprefixer?browsers=last 2 version!sass?outputStyle=expanded&sourceMap=true&sourceMapContents=true')
+        loader: extractCSS.extract({
+          fallback: 'style-loader',
+          use: [
+            { loader: 'css-loader', options: { sourceMap: true } },
+            { loader: 'autoprefixer-loader', options: { browsers: 'last 2 version' } },
+            { loader: 'sass-loader', options: { outputStyle: 'expanded', sourceMap: true, sourceMapContents: true } }
+          ]
+        })
       },
 
       {
@@ -92,24 +100,21 @@ module.exports = function (config) {
     ]
   }
 
-
-  config.webpack.module.progress = true
-  config.webpack.module.resolve = {
-    modulesDirectories: ['node_modules'],
-    extensions: ['', '.json', '.js', '.jsx']
+  config.webpack.resolve = {
+    modules: ['node_modules'],
+    extensions: ['.json', '.js', '.jsx']
   }
 
   config.webpack.plugins = [
     new CleanPlugin([assetsPath], { root: process.cwd() }),
-    new ExtractTextPlugin('[name]-[chunkhash].css', { allChunks: true }),
+    extractCSS,
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'
       }
     }),
     new webpack.IgnorePlugin(/\.\/development/, /\/config$/),
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.OccurenceOrderPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       compress: { warnings: false }
     }),

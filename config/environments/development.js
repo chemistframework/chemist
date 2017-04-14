@@ -10,7 +10,7 @@ module.exports = function (config) {
 
   const webpackIsomorphicPlugin = new WebpackIsomorphicToolsPlugin(config.webpackIsomorphicTools)
 
-  config.webpack.module.loaders = [
+  config.webpack.module.rules = [
     {
       test: /\.jsx?$/,
       exclude: /node_modules/,
@@ -23,10 +23,10 @@ module.exports = function (config) {
     {
       test: /\.scss$/,
       loaders: [
-        'style?sourceMap',
-        'css?sourceMap',
-        'autoprefixer?browsers=last 2 version',
-        'sass?outputStyle=expanded&sourceMap'
+        'style-loader?sourceMap',
+        'css-loader?sourceMap',
+        'autoprefixer-loader?browsers=last 2 version',
+        'sass-loader?outputStyle=expanded&sourceMap'
       ]
     },
     {
