@@ -11,7 +11,7 @@ const respond = (res, mode, body) => {
   return null
 }
 
-module.exports = function middleware ({ components, Document, createStore } = {}) {
+exports.rendering = function ({ components, Document, createStore } = {}) {
   return function renderingMiddleware (req, res, next) {
     res.chemist = {}
 

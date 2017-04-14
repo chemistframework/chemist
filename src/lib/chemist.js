@@ -3,7 +3,7 @@ const express = require('express')
 const cors = require('cors')
 const bodyParser = require('body-parser')
 const config = require('../lib/config')
-const rendering = require('./middleware')
+const { rendering } = require('./middleware')
 
 function chemist ({ pages = {}, Document, createStore } = {}) {
   const app = express()

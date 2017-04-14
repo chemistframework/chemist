@@ -5,7 +5,9 @@ var express = require('express');
 var cors = require('cors');
 var bodyParser = require('body-parser');
 var config = require('../lib/config');
-var rendering = require('./middleware');
+
+var _require = require('./middleware'),
+    rendering = _require.rendering;
 
 function chemist() {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},

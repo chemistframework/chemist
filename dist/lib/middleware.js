@@ -13,7 +13,7 @@ var respond = function respond(res, mode, body) {
   return null;
 };
 
-module.exports = function middleware() {
+exports.rendering = function () {
   var _ref = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {},
       components = _ref.components,
       Document = _ref.Document,

@@ -1,6 +1,6 @@
 const chemist = require('./dist/lib/chemist')
 
 chemist.config = require('./dist/lib/config')
-chemist.middleware = require('./dist/lib/middleware')
+chemist.rendering = require('./dist/lib/middleware').rendering
 
 module.exports = chemist
