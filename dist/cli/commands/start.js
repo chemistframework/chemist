@@ -1,5 +1,3 @@
-'use strict';
-
 var WebpackIsomorphicTools = require('webpack-isomorphic-tools');
 var config = require('../../lib/config');
 

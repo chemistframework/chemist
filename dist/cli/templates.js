@@ -1,5 +1,3 @@
-'use strict';
-
 var templates = {};
 
 templates['app/client/reducers/index.js'] = function () {

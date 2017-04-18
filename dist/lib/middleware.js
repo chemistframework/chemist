@@ -1,5 +1,3 @@
-'use strict';
-
 var render = require('../../chemist-render');
 
 var requestMode = function requestMode(req) {

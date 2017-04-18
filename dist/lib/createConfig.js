@@ -1,5 +1,3 @@
-'use strict';
-
 var path = require('path');
 
 function mergeConfigFile(filePath, config) {

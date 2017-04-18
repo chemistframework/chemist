@@ -1,5 +1,3 @@
-'use strict';
-
 var _require = require('./types'),
     SET_LOCATION = _require.SET_LOCATION;
 

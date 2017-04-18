@@ -1,5 +1,3 @@
-'use strict';
-
 exports._warnings = [];
 
 exports.warn = function warn(message) {

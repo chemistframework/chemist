@@ -14,7 +14,7 @@ module.exports = function (config) {
     {
       test: /\.jsx?$/,
       exclude: /node_modules/,
-      loaders: ['babel-loader']
+      loader: 'babel-loader'
     },
     {
       test: /\.json$/,

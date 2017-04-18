@@ -14,9 +14,11 @@ function fetchAndReplaceLocation ({ host, location, history }) {
         credentials: 'same-origin',
         headers: { Accept: 'application/json' }
       })
-      const page = await response.json()
+      const { page: pageName, props } = await response.json()
+      const pagePath = `~/www/evermore-cluster/evermore/apps/www/web/pages/${pageName}`
+      const Page = await import(pagePath)
       const responseResource = parseUri(response.url).resource()
-      const responseLocation = createLocation(responseResource, { page })
+      const responseLocation = createLocation(responseResource, { page: { page: Page, props } })
 
       history.replace(responseLocation)
     } catch (e) {

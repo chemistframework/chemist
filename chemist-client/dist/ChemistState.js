@@ -1,5 +1,3 @@
-'use strict';
-
 var React = require('react');
 var serialize = require('serialize-js');
 

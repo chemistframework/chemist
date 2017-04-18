@@ -1,5 +1,3 @@
-'use strict';
-
 var watch = function () {
   var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
     var compiler, host, port, app, serverOptions;

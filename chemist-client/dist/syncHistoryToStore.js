@@ -1,5 +1,3 @@
-'use strict';
-
 var _require = require('./actions/routing'),
     setLocation = _require.setLocation,
     fetchAndReplaceLocation = _require.fetchAndReplaceLocation;

@@ -1,5 +1,3 @@
-'use strict';
-
 var create = function () {
   var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(name) {
     var dir = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : name;
@@ -34,7 +32,7 @@ var create = function () {
     }, _callee, this);
   }));
 
-  return function create(_x, _x2) {
+  return function create(_x) {
     return _ref.apply(this, arguments);
   };
 }();

@@ -1,5 +1,3 @@
-'use strict';
-
 var program = require('commander');
 var pkg = require('../../package.json');
 var create = require('./commands/create');

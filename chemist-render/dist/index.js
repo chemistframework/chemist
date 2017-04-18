@@ -26,31 +26,33 @@ function renderJson(_ref) {
 
 function renderHtml(_ref2) {
   var Document = _ref2.Document,
-      PageComponent = _ref2.PageComponent,
+      loadPageComponent = _ref2.loadPageComponent,
       page = _ref2.page,
       props = _ref2.props,
       createStore = _ref2.createStore;
 
-  try {
-    var layoutProps = { assets: global.webpackIsomorphic.assets() };
-    var store = createStore({ initialPage: page, initialProps: props });
+  return loadPageComponent().then(function (PageComponent) {
+    try {
+      var layoutProps = { assets: global.webpackIsomorphic.assets() };
+      var store = createStore({ initialPage: page, initialProps: props });
 
-    var content = ReactDOM.renderToString(React.createElement(
-      Provider,
-      { store: store },
-      React.createElement(PageComponent, props)
-    ));
+      var content = ReactDOM.renderToString(React.createElement(
+        Provider,
+        { store: store },
+        React.createElement(PageComponent, props)
+      ));
 
-    content = ReactDOM.renderToStaticMarkup(React.createElement(Document, _extends({
-      content: content,
-      page: page,
-      pageProps: props
-    }, layoutProps)));
+      content = ReactDOM.renderToStaticMarkup(React.createElement(Document, _extends({
+        content: content,
+        page: page,
+        pageProps: props
+      }, layoutProps)));
 
-    return Promise.resolve(content);
-  } catch (e) {
-    return Promise.reject(e);
-  }
+      return Promise.resolve(content);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  });
 }
 
 function render(_ref3) {
@@ -69,14 +71,14 @@ function render(_ref3) {
 
   if (!page) return Promise.reject(new Error(MISSING_COMPONENT_ERROR));
 
-  var PageComponent = pages[page];
-  if (!PageComponent) return Promise.reject(new Error(missingPageError(page)));
+  var loadPageComponent = pages[page];
+  if (!loadPageComponent) return Promise.reject(new Error(missingPageError(page)));
 
   switch (mode) {
     case 'JSON':
       return renderJson({ page: page, props: props });
     case 'HTML':
-      return renderHtml({ Document: Document, PageComponent: PageComponent, page: page, props: props, createStore: createStore });
+      return renderHtml({ Document: Document, loadPageComponent: loadPageComponent, page: page, props: props, createStore: createStore });
     default:
       return Promise.reject(new Error(invalidModeError(mode)));
   }

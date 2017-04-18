@@ -1,5 +1,3 @@
-'use strict';
-
 var path = require('path');
 var glob = require('glob');
 var flatten = require('flatten');

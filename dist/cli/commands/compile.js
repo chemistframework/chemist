@@ -1,5 +1,3 @@
-'use strict';
-
 var compile = function () {
   var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
     return regeneratorRuntime.wrap(function _callee$(_context) {

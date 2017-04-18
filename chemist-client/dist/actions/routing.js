@@ -1,5 +1,3 @@
-'use strict';
-
 function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var _require = require('history'),
@@ -24,7 +22,8 @@ function fetchAndReplaceLocation(_ref2) {
       history = _ref2.history;
 
   return _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-    var path, response, page, responseResource, responseLocation;
+    var path, response, _ref4, pageName, props, pagePath, Page, responseResource, responseLocation;
+
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -43,28 +42,36 @@ function fetchAndReplaceLocation(_ref2) {
             return response.json();
 
           case 7:
-            page = _context.sent;
+            _ref4 = _context.sent;
+            pageName = _ref4.page;
+            props = _ref4.props;
+            pagePath = '~/www/evermore-cluster/evermore/apps/www/web/pages/' + pageName;
+            _context.next = 13;
+            return import(pagePath);
+
+          case 13:
+            Page = _context.sent;
             responseResource = parseUri(response.url).resource();
-            responseLocation = createLocation(responseResource, { page: page });
+            responseLocation = createLocation(responseResource, { page: { page: Page, props: props } });
 
 
             history.replace(responseLocation);
-            _context.next = 16;
+            _context.next = 22;
             break;
 
-          case 13:
-            _context.prev = 13;
+          case 19:
+            _context.prev = 19;
             _context.t0 = _context['catch'](0);
 
             // TODO: handle this error properly
             console.error(_context.t0);
 
-          case 16:
+          case 22:
           case 'end':
             return _context.stop();
         }
       }
-    }, _callee, this, [[0, 13]]);
+    }, _callee, this, [[0, 19]]);
   }));
 }
 
