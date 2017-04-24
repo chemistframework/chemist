@@ -1,30 +1,28 @@
-const { createLocation } = require('history')
-const parseUri = require('urijs')
-const { SET_LOCATION } = require('../types')
+const {
+  SET_LOCATION,
+  SET_LOCATION_ERROR,
+  SET_PAGE,
+  REQUEST_PAGE,
+  REQUEST_PAGE_ERROR
+} = require('../types')
 
-function setLocation ({ location, page, props }) {
-  return { type: SET_LOCATION, location, page, props }
-}
+const setLocation = ({ resource, page, props }) =>
+  ({ type: SET_LOCATION, resource, page, props })
 
-function fetchAndReplaceLocation ({ host, location, history }) {
-  return async function () {
-    try {
-      const path = host + location.pathname + location.search
-      const response = await fetch(path, {
-        credentials: 'same-origin',
-        headers: { Accept: 'application/json' }
-      })
-      const page = await response.json()
-      const responseResource = parseUri(response.url).resource()
-      const responseLocation = createLocation(responseResource, { page })
+const setLocationError = error =>
+  ({ type: SET_LOCATION_ERROR, error })
 
-      history.replace(responseLocation)
-    } catch (e) {
-      // TODO: handle this error properly
-      console.error(e)
-    }
-  }
-}
+const setPage = ({ page, props }) =>
+  ({ type: SET_PAGE, page, props })
+
+const requestPage = ({ path, options = {} }) =>
+  ({ type: REQUEST_PAGE, path, options })
+
+const requestPageError = e =>
+  ({ type: REQUEST_PAGE_ERROR, error: e })
 
 exports.setLocation = setLocation
-exports.fetchAndReplaceLocation = fetchAndReplaceLocation
+exports.setLocationError = setLocationError
+exports.setPage = setPage
+exports.requestPage = requestPage
+exports.requestPageError = requestPageError

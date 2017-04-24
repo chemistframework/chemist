@@ -16,7 +16,8 @@ var _require = require('react-redux'),
 var _require2 = require('history'),
     createLocation = _require2.createLocation;
 
-var createServerHttp = require('./createServerHttp');
+var _require3 = require('./actions/routing'),
+    requestPage = _require3.requestPage;
 
 var HISTORY_NOT_PRESENT_ERROR = '<ClientRouter> will not work without a history prop';
 
@@ -34,19 +35,17 @@ var ClientRouter = function (_React$Component) {
     value: function getChildContext() {
       var _this2 = this;
 
-      var pushLocation = function pushLocation(pathname) {
-        var location = createLocation(pathname);
-        _this2.props.history.push(location);
+      var request = function request(path) {
+        var options = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
+        _this2.props.dispatch(requestPage({ path: path, options: options }));
       };
 
-      var pushLocationWithPage = function pushLocationWithPage(pathname, page) {
-        var location = createLocation(pathname, { page: page });
-        _this2.props.history.push(location);
+      var pushLocation = function pushLocation(resource) {
+        _this2.props.history.replace(createLocation(resource));
       };
 
-      var serverHttp = createServerHttp(pushLocationWithPage);
-
-      return { router: { pushLocation: pushLocation, pushLocationWithPage: pushLocationWithPage, serverHttp: serverHttp } };
+      return { router: { request: request, pushLocation: pushLocation } };
     }
   }, {
     key: 'componentWillMount',

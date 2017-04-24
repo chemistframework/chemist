@@ -1,16 +1,14 @@
-const { setLocation, fetchAndReplaceLocation } = require('./actions/routing')
+const { setPage, requestPage } = require('./actions/routing')
 
 module.exports = function syncHistoryToStore ({ history, store }) {
-  const host = `${window.location.protocol}//${window.location.host}`
-
   history.listen(location => {
     const page = location.state && location.state.page
+    const path = location.pathname + location.search
 
     if (page) {
-      const payload = Object.assign({}, page, { location })
-      store.dispatch(setLocation(payload))
+      store.dispatch(setPage(page))
     } else {
-      store.dispatch(fetchAndReplaceLocation({ host, location, history }))
+      store.dispatch(requestPage({ path }))
     }
   })
 }

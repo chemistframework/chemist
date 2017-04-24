@@ -1,23 +1,21 @@
 'use strict';
 
 var _require = require('./actions/routing'),
-    setLocation = _require.setLocation,
-    fetchAndReplaceLocation = _require.fetchAndReplaceLocation;
+    setPage = _require.setPage,
+    requestPage = _require.requestPage;
 
 module.exports = function syncHistoryToStore(_ref) {
   var history = _ref.history,
       store = _ref.store;
 
-  var host = window.location.protocol + '//' + window.location.host;
-
   history.listen(function (location) {
     var page = location.state && location.state.page;
+    var path = location.pathname + location.search;
 
     if (page) {
-      var payload = Object.assign({}, page, { location: location });
-      store.dispatch(setLocation(payload));
+      store.dispatch(setPage(page));
     } else {
-      store.dispatch(fetchAndReplaceLocation({ host: host, location: location, history: history }));
+      store.dispatch(requestPage({ path: path }));
     }
   });
 };

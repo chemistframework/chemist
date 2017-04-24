@@ -1,72 +1,42 @@
 'use strict';
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+var _require = require('../types'),
+    SET_LOCATION = _require.SET_LOCATION,
+    SET_LOCATION_ERROR = _require.SET_LOCATION_ERROR,
+    SET_PAGE = _require.SET_PAGE,
+    REQUEST_PAGE = _require.REQUEST_PAGE,
+    REQUEST_PAGE_ERROR = _require.REQUEST_PAGE_ERROR;
 
-var _require = require('history'),
-    createLocation = _require.createLocation;
-
-var parseUri = require('urijs');
-
-var _require2 = require('../types'),
-    SET_LOCATION = _require2.SET_LOCATION;
-
-function setLocation(_ref) {
-  var location = _ref.location,
+var setLocation = function setLocation(_ref) {
+  var resource = _ref.resource,
       page = _ref.page,
       props = _ref.props;
+  return { type: SET_LOCATION, resource: resource, page: page, props: props };
+};
 
-  return { type: SET_LOCATION, location: location, page: page, props: props };
-}
+var setLocationError = function setLocationError(error) {
+  return { type: SET_LOCATION_ERROR, error: error };
+};
 
-function fetchAndReplaceLocation(_ref2) {
-  var host = _ref2.host,
-      location = _ref2.location,
-      history = _ref2.history;
+var setPage = function setPage(_ref2) {
+  var page = _ref2.page,
+      props = _ref2.props;
+  return { type: SET_PAGE, page: page, props: props };
+};
 
-  return _asyncToGenerator(regeneratorRuntime.mark(function _callee() {
-    var path, response, page, responseResource, responseLocation;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            _context.prev = 0;
-            path = host + location.pathname + location.search;
-            _context.next = 4;
-            return fetch(path, {
-              credentials: 'same-origin',
-              headers: { Accept: 'application/json' }
-            });
+var requestPage = function requestPage(_ref3) {
+  var path = _ref3.path,
+      _ref3$options = _ref3.options,
+      options = _ref3$options === undefined ? {} : _ref3$options;
+  return { type: REQUEST_PAGE, path: path, options: options };
+};
 
-          case 4:
-            response = _context.sent;
-            _context.next = 7;
-            return response.json();
-
-          case 7:
-            page = _context.sent;
-            responseResource = parseUri(response.url).resource();
-            responseLocation = createLocation(responseResource, { page: page });
-
-
-            history.replace(responseLocation);
-            _context.next = 16;
-            break;
-
-          case 13:
-            _context.prev = 13;
-            _context.t0 = _context['catch'](0);
-
-            // TODO: handle this error properly
-            console.error(_context.t0);
-
-          case 16:
-          case 'end':
-            return _context.stop();
-        }
-      }
-    }, _callee, this, [[0, 13]]);
-  }));
-}
+var requestPageError = function requestPageError(e) {
+  return { type: REQUEST_PAGE_ERROR, error: e };
+};
 
 exports.setLocation = setLocation;
-exports.fetchAndReplaceLocation = fetchAndReplaceLocation;
+exports.setLocationError = setLocationError;
+exports.setPage = setPage;
+exports.requestPage = requestPage;
+exports.requestPageError = requestPageError;
