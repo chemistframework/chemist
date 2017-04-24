@@ -14,3 +14,4 @@ exports.REQUEST_PAGE = require('./chemist-client/dist/types').REQUEST_PAGE
 exports.REQUEST_PAGE_ERROR = require('./chemist-client/dist/types').REQUEST_PAGE_ERROR
 exports.createPageSaga = require('./chemist-client/dist/sagas').createPageSaga
 exports.createHistorySaga = require('./chemist-client/dist/sagas').createHistorySaga
+exports.request = require('./chemist-client/dist/request')

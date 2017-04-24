@@ -1,25 +1,9 @@
 const { call, put, takeEvery } = require('redux-saga/effects')
 const parseUri = require('urijs')
 const { createLocation } = require('history')
-const merge = require('deepmerge')
 const { SET_LOCATION, REQUEST_PAGE } = require('./types')
 const { setLocation, setLocationError, requestPageError } = require('./actions/routing')
-
-const DEFAULT_FETCH_OPTIONS = {
-  credentials: 'same-origin',
-  headers: { Accept: 'application/json' }
-}
-
-async function request (path, options) {
-  const url = `${window.location.protocol}//${window.location.host}${path}`
-  const fetchOptions = merge(DEFAULT_FETCH_OPTIONS, options)
-
-  const response = await fetch(url, fetchOptions)
-  if (!response.ok) throw Error(response.statusText)
-
-  const json = await response.json()
-  return { json, response }
-}
+const request = require('./request')
 
 function replaceHistory (history, resource, page) {
   const responseLocation = createLocation(resource, { page, skipFetch: true })
