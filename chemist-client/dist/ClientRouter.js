@@ -13,13 +13,9 @@ var React = require('react');
 var _require = require('react-redux'),
     connect = _require.connect;
 
-var _require2 = require('history'),
-    createLocation = _require2.createLocation;
-
-var _require3 = require('./actions/routing'),
-    requestPage = _require3.requestPage;
-
-var HISTORY_NOT_PRESENT_ERROR = '<ClientRouter> will not work without a history prop';
+var _require2 = require('./actions/routing'),
+    requestPage = _require2.requestPage,
+    pushHistory = _require2.pushHistory;
 
 var ClientRouter = function (_React$Component) {
   _inherits(ClientRouter, _React$Component);
@@ -42,17 +38,10 @@ var ClientRouter = function (_React$Component) {
       };
 
       var pushLocation = function pushLocation(resource) {
-        _this2.props.history.push(createLocation(resource));
+        _this2.props.dispatch(pushHistory(resource));
       };
 
       return { router: { request: request, pushLocation: pushLocation } };
-    }
-  }, {
-    key: 'componentWillMount',
-    value: function componentWillMount() {
-      if (!this.props.history) {
-        throw new Error(HISTORY_NOT_PRESENT_ERROR);
-      }
     }
   }, {
     key: 'render',

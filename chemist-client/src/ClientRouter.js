@@ -1,9 +1,6 @@
 const React = require('react')
 const { connect } = require('react-redux')
-const { createLocation } = require('history')
-const { requestPage } = require('./actions/routing')
-
-const HISTORY_NOT_PRESENT_ERROR = '<ClientRouter> will not work without a history prop'
+const { requestPage, pushHistory } = require('./actions/routing')
 
 class ClientRouter extends React.Component {
   getChildContext () {
@@ -12,16 +9,10 @@ class ClientRouter extends React.Component {
     }
 
     const pushLocation = resource => {
-      this.props.history.push(createLocation(resource))
+      this.props.dispatch(pushHistory(resource))
     }
 
     return { router: { request, pushLocation } }
-  }
-
-  componentWillMount () {
-    if (!this.props.history) {
-      throw new Error(HISTORY_NOT_PRESENT_ERROR)
-    }
   }
 
   render () {

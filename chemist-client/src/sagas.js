@@ -1,9 +1,13 @@
 const { call, put, takeEvery } = require('redux-saga/effects')
 const parseUri = require('urijs')
 const { createLocation } = require('history')
-const { SET_LOCATION, REQUEST_PAGE } = require('./types')
-const { setLocation, setLocationError, requestPageError } = require('./actions/routing')
+const { SET_LOCATION, REQUEST_PAGE, PUSH_HISTORY } = require('./types')
+const { setLocation, setLocationError, requestPageError, pushHistoryError } = require('./actions/routing')
 const request = require('./request')
+
+function pushHistory (history, resource) {
+  return history.push(createLocation(resource))
+}
 
 function replaceHistory (history, resource, page) {
   const responseLocation = createLocation(resource, { page, skipFetch: true })
@@ -16,6 +20,14 @@ function* setPageChange (history, action) {
     yield call(replaceHistory, history, action.resource, page)
   } catch (e) {
     yield put(setLocationError(e))
+  }
+}
+
+function* pushPageLocation (history, action) {
+  try {
+    yield call(pushHistory, history, action.resource)
+  } catch (e) {
+    yield put(pushHistoryError(e))
   }
 }
 
@@ -40,6 +52,7 @@ function createPageSaga () {
 function createHistorySaga (history) {
   return function* historySaga () {
     yield takeEvery(SET_LOCATION, setPageChange, history)
+    yield takeEvery(PUSH_HISTORY, pushPageLocation, history)
   }
 }
 

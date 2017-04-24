@@ -5,7 +5,9 @@ var _require = require('../types'),
     SET_LOCATION_ERROR = _require.SET_LOCATION_ERROR,
     SET_PAGE = _require.SET_PAGE,
     REQUEST_PAGE = _require.REQUEST_PAGE,
-    REQUEST_PAGE_ERROR = _require.REQUEST_PAGE_ERROR;
+    REQUEST_PAGE_ERROR = _require.REQUEST_PAGE_ERROR,
+    PUSH_HISTORY = _require.PUSH_HISTORY,
+    PUSH_HISTORY_ERROR = _require.PUSH_HISTORY_ERROR;
 
 var setLocation = function setLocation(_ref) {
   var resource = _ref.resource,
@@ -35,8 +37,18 @@ var requestPageError = function requestPageError(e) {
   return { type: REQUEST_PAGE_ERROR, error: e };
 };
 
+var pushHistory = function pushHistory(resource) {
+  return { type: PUSH_HISTORY, resource: resource };
+};
+
+var pushHistoryError = function pushHistoryError(e) {
+  return { type: PUSH_HISTORY_ERROR, error: e };
+};
+
 exports.setLocation = setLocation;
 exports.setLocationError = setLocationError;
 exports.setPage = setPage;
 exports.requestPage = requestPage;
 exports.requestPageError = requestPageError;
+exports.pushHistory = pushHistory;
+exports.pushHistoryError = pushHistoryError;
