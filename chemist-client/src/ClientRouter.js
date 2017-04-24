@@ -12,7 +12,7 @@ class ClientRouter extends React.Component {
     }
 
     const pushLocation = resource => {
-      this.props.history.replace(createLocation(resource))
+      this.props.history.push(createLocation(resource))
     }
 
     return { router: { request, pushLocation } }

@@ -42,7 +42,7 @@ var ClientRouter = function (_React$Component) {
       };
 
       var pushLocation = function pushLocation(resource) {
-        _this2.props.history.replace(createLocation(resource));
+        _this2.props.history.push(createLocation(resource));
       };
 
       return { router: { request: request, pushLocation: pushLocation } };
